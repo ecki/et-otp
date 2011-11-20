@@ -48,7 +48,7 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "0.1";
+	private static final String VERSION = "0.2";
 	
 	private JPasswordField passwordField;
 	private JTextField textField;
@@ -73,13 +73,11 @@ public class GUI implements ActionListener
 		g.frame.setLayout(layout);
 
 		JMenuBar mb = new JMenuBar();
-		JMenu m = new JMenu("et-otp");
-		m.setMnemonic(KeyEvent.VK_T);
+		JMenu m = new JMenu("et-otp"); m.setMnemonic(KeyEvent.VK_E);
 		JMenuItem mi = new JMenuItem("Settings"); mi.addActionListener(g);  m.add(mi);
 		mi = new JMenuItem("Quit"); mi.addActionListener(g);  m.add(mi);
 		mb.add(m);
-		m = new JMenu("Help");
-		m.setMnemonic(KeyEvent.VK_HELP);
+		m = new JMenu("Help"); m.setMnemonic(KeyEvent.VK_H);
 		mi = new JMenuItem("Manual"); mi.addActionListener(g);  m.add(mi);
 		mi = new JMenuItem("About"); mi.addActionListener(g);  m.add(mi);
 		mb.add(m);
