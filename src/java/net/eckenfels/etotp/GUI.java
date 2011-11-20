@@ -196,7 +196,7 @@ public class GUI implements ActionListener
 		else if ("Manual".equals(e.getActionCommand()))
 		{
 			try {
-				Desktop.getDesktop().browse(new URI("http://bernd.eckenfels.net"));
+				Desktop.getDesktop().browse(new URI("http://ecki.github.com/et-otp"));
 			} catch (Exception ignored) { }
 		} 
 		else if ("Save".equals(e.getActionCommand()))
@@ -248,7 +248,7 @@ public class GUI implements ActionListener
 				t.setText("<h1>eckes' TOTP Generator (et-otp)</h1><p>This generator can be used to produce a TOTP (RFC 6238) time-based one-time password.</p>" +
 						  "<p>This is a so called soft-token, it will be initialized with a specified BASE32 secret. This method is compatible with Amazon's MFA for AWS.</p>" +
 						  "<p>This Java Program is from <b>Bernd Eckenfels</b>, it includes some code from the reference implementation if HOTP (RFC 4226) as well as Google's BASE32 implementation from the Google Authenticator project.</p>" +
-						  "<p>License: GPLv2. Version: " + VERSION);
+						  "<p>License: GPLv2. Version: " + VERSION + " Homepage: http://ecki.github.com/et-otp");
 				t.validate();
 				d.add(t);
 				d.setSize(600, 400);
