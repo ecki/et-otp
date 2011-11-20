@@ -57,7 +57,7 @@ public class GUI implements ActionListener
 	private JDialog settingsDialog;
 	private JDialog aboutDialog;
 	private JTextField settingsCode;
-	private JTextField settingsPass;
+	private JPasswordField settingsPass;
 
 	GUI()
 	{
@@ -91,7 +91,7 @@ public class GUI implements ActionListener
 		c.weighty = 0;
 		c.weightx = 1;
 		c.insets = new Insets(5, 5, 5, 5);
-		JLabel label = new JLabel("eckes' TOTP Generator", JLabel.CENTER);
+		JLabel label = new JLabel("et-OTP Soft Token", JLabel.CENTER);
 		label.setFont(new Font("Serif", Font.BOLD, 16));
 		g.frame.add(label, c);
 
@@ -102,6 +102,7 @@ public class GUI implements ActionListener
 		c.gridwidth = 2;
 		c.weighty = 2;
 		c.weightx = 1;
+		c.insets = new Insets(0,10,10,10);
 		g.passwordField = new JPasswordField("");
 		g.frame.add(g.passwordField, c);
 		g.passwordField.setCaretPosition(0);
@@ -113,11 +114,12 @@ public class GUI implements ActionListener
 		c.gridwidth = 1;
 		c.weightx = 1;
 		c.weighty = 1;
-		c.insets = new Insets(10,0,10,0);
+		c.insets = new Insets(0,10,10,10);
 		c.ipadx = 70;
-		c.anchor = GridBagConstraints.SOUTH;
+		c.anchor = GridBagConstraints.CENTER;
 		JTextField text  = new JTextField("");
 		text.setFont(new Font("Dialog", Font.BOLD, 16));
+		text.setEditable(false);
 		g.frame.add(text, c);
 
 		c.fill = GridBagConstraints.NONE;
@@ -140,9 +142,9 @@ public class GUI implements ActionListener
 		c.gridwidth = 1;
 		c.weightx = 2;
 		c.weighty = 0;
-		c.insets = new Insets(10,20,10,0);
-		c.anchor = GridBagConstraints.SOUTH;
-		label = new JLabel("Your Code: ", JLabel.RIGHT);
+		c.insets = new Insets(0,20,10,0);
+		c.anchor = GridBagConstraints.CENTER;
+		label = new JLabel("Your Code:", JLabel.RIGHT);
 		g.frame.add(label, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -154,7 +156,7 @@ public class GUI implements ActionListener
 		c.weighty = 0;
 		c.anchor = GridBagConstraints.SOUTH;
 		c.insets = new Insets(0,20,10,0);
-		label = new JLabel("Next Code: ", JLabel.RIGHT);
+		label = new JLabel("Next Code:", JLabel.RIGHT);
 		g.frame.add(label, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -165,7 +167,7 @@ public class GUI implements ActionListener
 		c.weightx = 1;
 		c.weighty = 0;
 		c.anchor = GridBagConstraints.SOUTH;
-		c.insets = new Insets(0,0,10,0);
+		c.insets = new Insets(0,10,10,0);
 		label = new JLabel("", JLabel.LEFT);
 		g.frame.add(label, c);
 
@@ -202,7 +204,7 @@ public class GUI implements ActionListener
 			settingsDialog.setVisible(false);
 
 			String code = settingsCode.getText();
-			String pass = settingsPass.getText();
+			char[] pass = settingsPass.getPassword();
 
 			try
 			{
@@ -291,7 +293,7 @@ public class GUI implements ActionListener
 		}
 	}
 
-	private void writeSecret(String code, String pass)
+	private void writeSecret(String code, char[] pass)
 			throws DecodingException, NoSuchAlgorithmException,
 			InvalidKeySpecException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException,
@@ -306,7 +308,8 @@ public class GUI implements ActionListener
 		SecureRandom rand = SecureRandom.getInstance("SHA1PRNG");  
 		byte[] salt = new byte[16];  
 		rand.nextBytes(salt);  
-		SecretKey password = f.generateSecret(new PBEKeySpec(pass.toCharArray(), salt, 1000, 128));
+		SecretKey password = f.generateSecret(new PBEKeySpec(pass, salt, 1000, 128));
+		// TODO clean pass
 		password = new SecretKeySpec(password.getEncoded(), "AES");
 
 		System.out.println(" password=" + Base32.encode(password.getEncoded()));
@@ -376,7 +379,7 @@ public class GUI implements ActionListener
 		c.gridy = 1;
 		c.weightx = 0;
 		c.insets = new Insets(10, 10, 10, 10);
-		dia.add(new JLabel("Code:", JLabel.RIGHT), c);
+		dia.add(new JLabel("Code (base32):", JLabel.RIGHT), c);
 
 		c.gridx = 2;
 		c.gridy = 1;
@@ -392,7 +395,7 @@ public class GUI implements ActionListener
 		c.gridx = 2;
 		c.gridy = 2;
 		c.weightx = 1;
-		settingsPass = new JTextField();
+		settingsPass = new JPasswordField();
 		dia.add(settingsPass, c);
 
 		c.gridx = 1;
