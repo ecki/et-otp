@@ -73,7 +73,7 @@ public class GUI implements ActionListener
 		g.frame.setLayout(layout);
 
 		JMenuBar mb = new JMenuBar();
-		JMenu m = new JMenu("TOPT");
+		JMenu m = new JMenu("et-otp");
 		m.setMnemonic(KeyEvent.VK_T);
 		JMenuItem mi = new JMenuItem("Settings"); mi.addActionListener(g);  m.add(mi);
 		mi = new JMenuItem("Quit"); mi.addActionListener(g);  m.add(mi);
