@@ -48,7 +48,7 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "0.2";
+	private static final String VERSION = "0.3";
 	
 	private JPasswordField passwordField;
 	private JTextField textField;
