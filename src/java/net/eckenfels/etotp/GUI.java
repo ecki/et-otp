@@ -60,7 +60,6 @@ public class GUI implements ActionListener
 	private JTextField settingsCode;
 	private JPasswordField settingsPass;
 	private File configFile = new File(".et-otp.properties");
-
 	private JLabel settingsFileLabel;
 
 	GUI()
@@ -319,7 +318,6 @@ public class GUI implements ActionListener
 	{
 		byte[] codeBytes;
 		codeBytes = Base32.decode(code);
-		System.out.println(" code bytes " + codeBytes.length);
 		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 		SecureRandom rand = SecureRandom.getInstance("SHA1PRNG");  
 		byte[] salt = new byte[16];  
@@ -328,14 +326,12 @@ public class GUI implements ActionListener
 		// TODO clean pass
 		password = new SecretKeySpec(password.getEncoded(), "AES");
 
-		System.out.println(" password=" + Base32.encode(password.getEncoded()));
-
 		Cipher c = Cipher.getInstance("AES");
 		c.init(Cipher.ENCRYPT_MODE, password);
 
 		byte[] enc = c.doFinal(codeBytes);
 
-		System.out.println("WRITE salt " + Base32.encode(salt) + " enc " + Base32.encode(enc));
+		System.out.println("WRITE salt=" + Base32.encode(salt) + " encrypted=" + Base32.encode(enc));
 		
 		Properties p = new Properties();
 		p.put("key.1.name" , "test");
@@ -367,7 +363,7 @@ public class GUI implements ActionListener
 		salt = Base32.decode((String)p.get("key.1.salt"));
 		enc = Base32.decode((String)p.get("key.1.encoded"));
 		
-		System.out.println("READ salt " + Base32.encode(salt) + " enc " + Base32.encode(enc));
+		System.out.println("READ salt=" + Base32.encode(salt) + " encrypted=" + Base32.encode(enc));
 		
 		password = f.generateSecret(new PBEKeySpec(pass, salt, 1000, 128));
 		// TODO: overwrite pass
@@ -378,8 +374,6 @@ public class GUI implements ActionListener
 		c = Cipher.getInstance("AES");
 		c.init(Cipher.DECRYPT_MODE, password);
 		byte[] dec = c.doFinal(enc);
-		
-		System.out.println("dec=" + Base32.encode(dec));
 		
 		return dec;
 	}
