@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,7 +49,7 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "0.3";
+	private static final String VERSION = "0.4";
 	
 	private JPasswordField passwordField;
 	private JTextField textField;
@@ -58,6 +59,9 @@ public class GUI implements ActionListener
 	private JDialog aboutDialog;
 	private JTextField settingsCode;
 	private JPasswordField settingsPass;
+	private File configFile = new File(".et-otp.properties");
+
+	private JLabel settingsFileLabel;
 
 	GUI()
 	{
@@ -88,9 +92,10 @@ public class GUI implements ActionListener
 		c.gridy = 1;
 		c.gridheight = 1;
 		c.gridwidth = 3;
-		c.weighty = 0;
+		c.weighty = 1;
 		c.weightx = 1;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(10, 10, 20, 10);
+		c.anchor = GridBagConstraints.NORTH;
 		JLabel label = new JLabel("et-OTP Soft Token", JLabel.CENTER);
 		label.setFont(new Font("Serif", Font.BOLD, 16));
 		g.frame.add(label, c);
@@ -100,7 +105,19 @@ public class GUI implements ActionListener
 		c.gridy = 2;
 		c.gridheight = 1;
 		c.gridwidth = 2;
-		c.weighty = 2;
+		c.weighty = 0;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0,10,5,10);
+		label = new JLabel("Unlock Password:");
+		g.frame.add(label, c);
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 1;
+		c.gridy = 3;
+		c.gridheight = 1;
+		c.gridwidth = 2;
+		c.weighty = 0;
 		c.weightx = 1;
 		c.insets = new Insets(0,10,10,10);
 		g.passwordField = new JPasswordField("");
@@ -109,7 +126,7 @@ public class GUI implements ActionListener
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.weightx = 1;
@@ -122,22 +139,22 @@ public class GUI implements ActionListener
 		text.setEditable(false);
 		g.frame.add(text, c);
 
-		c.fill = GridBagConstraints.NONE;
+		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 3;
 		c.gridy = 2;
-		c.gridheight = 1;
+		c.gridheight = 2;
 		c.gridwidth = 1;
-		c.weighty = 2;
+		c.weighty = 0;
 		c.weightx = 0;
 		c.ipadx = 0;
-		c.insets = new Insets(0,5,0,5);
+		c.insets = new Insets(0,10,10,10);
 		c.anchor = GridBagConstraints.CENTER;
 		JButton button = new JButton("Calc");
 		g.frame.add(button, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.weightx = 2;
@@ -149,7 +166,7 @@ public class GUI implements ActionListener
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
-		c.gridy = 4;
+		c.gridy = 5;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.weightx = 2;
@@ -161,7 +178,7 @@ public class GUI implements ActionListener
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
-		c.gridy = 4;
+		c.gridy = 5;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.weightx = 1;
@@ -248,7 +265,7 @@ public class GUI implements ActionListener
 				t.setText("<h1>eckes' TOTP Generator (et-otp)</h1><p>This generator can be used to produce a TOTP (RFC 6238) time-based one-time password.</p>" +
 						  "<p>This is a so called soft-token, it will be initialized with a specified BASE32 secret. This method is compatible with Amazon's MFA for AWS.</p>" +
 						  "<p>This Java Program is from <b>Bernd Eckenfels</b>, it includes some code from the reference implementation if HOTP (RFC 4226) as well as Google's BASE32 implementation from the Google Authenticator project.</p>" +
-						  "<p>License: GPLv2. Version: " + VERSION + " Homepage: http://ecki.github.com/et-otp");
+						  "<p>License: GPLv2. Version: " + VERSION + " Homepage: http://ecki.github.com/et-otp</p><p>Config file: " + configFile.getAbsolutePath()+"</p>");
 				t.validate();
 				d.add(t);
 				d.setSize(600, 400);
@@ -265,6 +282,7 @@ public class GUI implements ActionListener
 			}
 			settingsCode.setText("");
 			settingsPass.setText("");
+			settingsFileLabel.setText("Config File " + (configFile.isFile()?"(overwrite)":"(missing)"));
 			settingsDialog.setVisible(true);
 		} 
 		else if ("Calc".equals(e.getActionCommand()))
@@ -299,8 +317,6 @@ public class GUI implements ActionListener
 			InvalidKeyException, IllegalBlockSizeException,
 			BadPaddingException, FileNotFoundException, IOException
 	{
-		System.out.println("Saving code " + code + " pass " + pass);
-
 		byte[] codeBytes;
 		codeBytes = Base32.decode(code);
 		System.out.println(" code bytes " + codeBytes.length);
@@ -325,7 +341,7 @@ public class GUI implements ActionListener
 		p.put("key.1.name" , "test");
 		p.put("key.1.salt", Base32.encode(salt));
 		p.put("key.1.encoded", Base32.encode(enc));
-		OutputStream os = new FileOutputStream("save.ini"); 
+		OutputStream os = new FileOutputStream(configFile); 
 		p.store(os , "et-otp softtokens");
 		os.flush();
 		os.close();
@@ -344,7 +360,7 @@ public class GUI implements ActionListener
 		Cipher c;
 		byte[] enc;
 		Properties p;
-		InputStream is = new FileInputStream("save.ini");
+		InputStream is = new FileInputStream(configFile);
 		p = new Properties();
 		p.load(is); is.close();
 		
@@ -371,19 +387,21 @@ public class GUI implements ActionListener
 	private void buildSettingsDialog(JDialog dia) 
 	{
 		dia.setLayout(new GridBagLayout());
-		dia.setSize(300, 200);
+		dia.setSize(640, 300);
 		GridBagConstraints c = new GridBagConstraints();
 
-		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
 		c.gridy = 1;
 		c.weightx = 0;
+		c.weighty = 0;
 		c.insets = new Insets(10, 10, 10, 10);
 		dia.add(new JLabel("Code (base32):", JLabel.RIGHT), c);
 
 		c.gridx = 2;
 		c.gridy = 1;
 		c.weightx = 1;
+		c.weighty = 0;
 		settingsCode = new JTextField();
 		dia.add(settingsCode, c);
 
@@ -401,10 +419,29 @@ public class GUI implements ActionListener
 		c.gridx = 1;
 		c.gridy = 3;
 		c.gridwidth = 2;
-		c.weightx = 0;
+		c.weightx = 1;
+		c.weighty = 1;
 		JButton button = new JButton("Save");
 		button.addActionListener(this);
 		dia.add(button,c);
+		
+		String file = configFile.getAbsolutePath();
+		c.gridx = 1;
+		c.gridy = 4;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.gridwidth = 2;
+		c.insets = new Insets(10,10,0,10);
+		settingsFileLabel = new JLabel("Config File " + (configFile.isFile()?"(overwrite)":"(missing)"));
+		dia.add(settingsFileLabel, c);
+
+		c.gridx = 1;
+		c.gridy = 5;
+		c.weightx = 1;
+		c.gridwidth = 2;
+		c.insets = new Insets(0,10,10,10);
+		JLabel label = new JLabel(file);
+		dia.add(label, c);
 	}
 }
 
