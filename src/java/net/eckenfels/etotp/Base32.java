@@ -50,7 +50,7 @@ public class Base32
 		// Remove all '-', ' ', '.' (seperators, trimming)
 		encoded = encoded.replaceAll("-? ?\\.?", "");
 		// Canonicalize to all upper case
-		encoded = encoded.toUpperCase();
+		encoded = encoded.toUpperCase(Locale.ENGLISH);
 		encoded = encoded.replaceAll("8", "B").replaceAll("1", "I");
 		
 		if (encoded.length() == 0) {
