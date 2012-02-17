@@ -50,7 +50,7 @@ import net.eckenfels.etotp.Base32.DecodingException;
 public class GUI implements ActionListener
 {
 	private static final String VERSION = "0.5";
-	
+
 	private JPasswordField passwordField;
 	private JTextField textField;
 	private JLabel textLabel;
@@ -213,9 +213,9 @@ public class GUI implements ActionListener
 		else if ("Manual".equals(e.getActionCommand()))
 		{
 			try {
-				Desktop.getDesktop().browse(new URI("http://ecki.github.com/et-otp"));
+				Desktop.getDesktop().browse(new URI("http://ecki.github.com/et-otp/"));
 			} catch (Exception ignored) { }
-		} 
+		}
 		else if ("Save".equals(e.getActionCommand()))
 		{
 			settingsDialog.setVisible(false);
@@ -255,7 +255,7 @@ public class GUI implements ActionListener
 				e10.printStackTrace();
 			}
 
-		} 
+		}
 		else if ("About".equals(e.getActionCommand()))
 		{
 			if (aboutDialog == null) {
@@ -272,7 +272,7 @@ public class GUI implements ActionListener
 				aboutDialog = d;
 			}
 			aboutDialog.setVisible(true);
-		} 
+		}
 		else if ("Settings".equals(e.getActionCommand()))
 		{
 			if (settingsDialog == null) {
@@ -284,15 +284,15 @@ public class GUI implements ActionListener
 			settingsPass.setText("");
 			settingsFileLabel.setText("Config File " + (configFile.isFile()?"(overwrite)":"(missing)"));
 			settingsDialog.setVisible(true);
-		} 
+		}
 		else if ("Calc".equals(e.getActionCommand()) || (e.getSource() == passwordField))
 		{
-			try 
+			try
 			{
 				char[] pass = passwordField.getPassword();
 
 				byte[] bytes = readSecret(pass);
-				
+
 				long seconds = System.currentTimeMillis() / 1000;
 				long t0 = 0l;
 				long step = 30l;
@@ -320,9 +320,9 @@ public class GUI implements ActionListener
 		byte[] codeBytes;
 		codeBytes = Base32.decode(code);
 		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		SecureRandom rand = SecureRandom.getInstance("SHA1PRNG");  
-		byte[] salt = new byte[16];  
-		rand.nextBytes(salt);  
+		SecureRandom rand = SecureRandom.getInstance("SHA1PRNG");
+		byte[] salt = new byte[16];
+		rand.nextBytes(salt);
 		SecretKey password = f.generateSecret(new PBEKeySpec(pass, salt, 1000, 128));
 		// TODO clean pass
 		password = new SecretKeySpec(password.getEncoded(), "AES");
@@ -333,12 +333,12 @@ public class GUI implements ActionListener
 		byte[] enc = c.doFinal(codeBytes);
 
 		System.out.println("WRITE salt=" + Base32.encode(salt) + " encrypted=" + Base32.encode(enc));
-		
+
 		Properties p = new Properties();
 		p.put("key.1.name" , "test");
 		p.put("key.1.salt", Base32.encode(salt));
 		p.put("key.1.encoded", Base32.encode(enc));
-		OutputStream os = new FileOutputStream(configFile); 
+		OutputStream os = new FileOutputStream(configFile);
 		p.store(os , "et-otp softtokens");
 		os.flush();
 		os.close();
@@ -348,7 +348,7 @@ public class GUI implements ActionListener
 			throws FileNotFoundException, IOException, DecodingException,
 			InvalidKeySpecException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException,
-			IllegalBlockSizeException, BadPaddingException 
+			IllegalBlockSizeException, BadPaddingException
 	{
 		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
@@ -360,12 +360,12 @@ public class GUI implements ActionListener
 		InputStream is = new FileInputStream(configFile);
 		p = new Properties();
 		p.load(is); is.close();
-		
+
 		salt = Base32.decode((String)p.get("key.1.salt"));
 		enc = Base32.decode((String)p.get("key.1.encoded"));
-		
+
 		System.out.println("READ salt=" + Base32.encode(salt) + " encrypted=" + Base32.encode(enc));
-		
+
 		password = f.generateSecret(new PBEKeySpec(pass, salt, 1000, 128));
 		// TODO: overwrite pass
 		password = new SecretKeySpec(password.getEncoded(), "AES");
@@ -375,11 +375,11 @@ public class GUI implements ActionListener
 		c = Cipher.getInstance("AES");
 		c.init(Cipher.DECRYPT_MODE, password);
 		byte[] dec = c.doFinal(enc);
-		
+
 		return dec;
 	}
 
-	private void buildSettingsDialog(JDialog dia) 
+	private void buildSettingsDialog(JDialog dia)
 	{
 		dia.setLayout(new GridBagLayout());
 		dia.setSize(640, 300);
@@ -419,7 +419,7 @@ public class GUI implements ActionListener
 		JButton button = new JButton("Save");
 		button.addActionListener(this);
 		dia.add(button,c);
-		
+
 		String file = configFile.getAbsolutePath();
 		c.gridx = 1;
 		c.gridy = 4;
