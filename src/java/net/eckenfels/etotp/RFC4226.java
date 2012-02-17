@@ -44,11 +44,13 @@ public class RFC4226
 	}
 
 
-    public static int calcChecksum(long num, int digits)
+    public static int calcChecksum(long numArg, int digitsArg)
     {
         boolean doubleDigit = true;
         int     total = 0;
-        while (0 < digits--) {
+        int digits = digitsArg;
+        long num = numArg;
+        while (digits-- > 0) {
             int digit = (int) (num % 10);
             num /= 10;
             if (doubleDigit) {
@@ -64,11 +66,12 @@ public class RFC4226
         return result;
     }
  
-	public static String generateOTP(byte[] secret, long movingFactor, int codeDigits, boolean addChecksum, int truncationOffset)
+	public static String generateOTP(byte[] secret, long movingFactorArg, int codeDigits, boolean addChecksum, int truncationOffset)
 		throws NoSuchAlgorithmException, InvalidKeyException
 	{
 		// put movingFactor value into text byte array
 		String result = null;
+		long movingFactor = movingFactorArg;
 		int digits = addChecksum ? (codeDigits + 1) : codeDigits;
 		byte[] text = new byte[8];
 		for (int i = text.length - 1; i >= 0; i--) {

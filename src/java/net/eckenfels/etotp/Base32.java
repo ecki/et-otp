@@ -4,13 +4,14 @@
 package net.eckenfels.etotp;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * Encodes arbitrary byte arrays as case-insensitive BASE32 strings.
  * <P>
  * This is based on the Google code from Steve Weis and Neal Gafter
- * http://code.google.com/p/google-authenticator/source/browse/mobile/android/src/com/google/android/apps/authenticator/Base32String.java    
+ * http://code.google.com/p/google-authenticator/source/browse/mobile/android/src/com/google/android/apps/authenticator/Base32String.java
  */
 public class Base32
 {
@@ -21,7 +22,7 @@ public class Base32
 	private final int SHIFT;
 	private final Map<Character, Integer> CHAR_MAP;
 
-	protected Base32() 
+	protected Base32()
 	{
 		DIGITS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".toCharArray(); // RFC 4668/3548
 		MASK = DIGITS.length - 1;
@@ -38,17 +39,17 @@ public class Base32
 		return INSTANCE;
 	}
 
-	public static byte[] decode(String encoded) 
-		throws DecodingException 
+	public static byte[] decode(String encoded)
+		throws DecodingException
 	{
 		return getInstance().decodeInternal(encoded);
 	}
 
-	protected byte[] decodeInternal(String encoded)
+	protected byte[] decodeInternal(String encodedArg)
 		throws DecodingException
 	{
-		// Remove all '-', ' ', '.' (seperators, trimming)
-		encoded = encoded.replaceAll("-? ?\\.?", "");
+		// Remove all '-', ' ', '.' (seperators, trimming). Might throw NPE if encodedArg is null
+		String encoded = encodedArg.replaceAll("-? ?\\.?", "");
 		// Canonicalize to all upper case
 		encoded = encoded.toUpperCase(Locale.ENGLISH);
 		encoded = encoded.replaceAll("8", "B").replaceAll("1", "I");
