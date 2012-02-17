@@ -49,7 +49,7 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "0.4";
+	private static final String VERSION = "0.5";
 	
 	private JPasswordField passwordField;
 	private JTextField textField;
@@ -68,24 +68,24 @@ public class GUI implements ActionListener
 
 	static void buildMainFrame()
 	{
-		GUI g = new GUI();
-		g.frame = new JFrame("et-opt");
-		g.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GridBagLayout layout = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-		g.frame.setLayout(layout);
+        GridBagLayout layout = new GridBagLayout();
+		GUI gui= new GUI();
+		gui.frame = new JFrame("et-opt");
+		gui.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gui.frame.setLayout(layout);
 
 		JMenuBar mb = new JMenuBar();
 		JMenu m = new JMenu("et-otp"); m.setMnemonic(KeyEvent.VK_E);
-		JMenuItem mi = new JMenuItem("Settings"); mi.addActionListener(g);  m.add(mi);
-		mi = new JMenuItem("Quit"); mi.addActionListener(g);  m.add(mi);
+		JMenuItem mi = new JMenuItem("Settings"); mi.addActionListener(gui);  m.add(mi);
+		mi = new JMenuItem("Quit"); mi.addActionListener(gui);  m.add(mi);
 		mb.add(m);
 		m = new JMenu("Help"); m.setMnemonic(KeyEvent.VK_H);
-		mi = new JMenuItem("Manual"); mi.addActionListener(g);  m.add(mi);
-		mi = new JMenuItem("About"); mi.addActionListener(g);  m.add(mi);
+		mi = new JMenuItem("Manual"); mi.addActionListener(gui);  m.add(mi);
+		mi = new JMenuItem("About"); mi.addActionListener(gui);  m.add(mi);
 		mb.add(m);
-		g.frame.setJMenuBar(mb);
+		gui.frame.setJMenuBar(mb);
 
+        GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
 		c.gridy = 1;
@@ -97,7 +97,7 @@ public class GUI implements ActionListener
 		c.anchor = GridBagConstraints.NORTH;
 		JLabel label = new JLabel("et-OTP Soft Token", JLabel.CENTER);
 		label.setFont(new Font("Serif", Font.BOLD, 16));
-		g.frame.add(label, c);
+		gui.frame.add(label, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
@@ -109,7 +109,7 @@ public class GUI implements ActionListener
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(0,10,5,10);
 		label = new JLabel("Unlock Password:");
-		g.frame.add(label, c);
+		gui.frame.add(label, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
@@ -119,9 +119,11 @@ public class GUI implements ActionListener
 		c.weighty = 0;
 		c.weightx = 1;
 		c.insets = new Insets(0,10,10,10);
-		g.passwordField = new JPasswordField("");
-		g.frame.add(g.passwordField, c);
-		g.passwordField.setCaretPosition(0);
+		JPasswordField pwField = new JPasswordField("");
+		pwField.setCaretPosition(0); // TODO: how to request focus
+        gui.passwordField = pwField;
+        pwField.addActionListener(gui);
+        gui.frame.add(pwField, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
@@ -136,7 +138,8 @@ public class GUI implements ActionListener
 		JTextField text  = new JTextField("");
 		text.setFont(new Font("Dialog", Font.BOLD, 16));
 		text.setEditable(false);
-		g.frame.add(text, c);
+        gui.textField = text;
+		gui.frame.add(text, c);
 
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 3;
@@ -149,7 +152,8 @@ public class GUI implements ActionListener
 		c.insets = new Insets(0,10,10,10);
 		c.anchor = GridBagConstraints.CENTER;
 		JButton button = new JButton("Calc");
-		g.frame.add(button, c);
+        button.addActionListener(gui);
+		gui.frame.add(button, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
@@ -161,7 +165,7 @@ public class GUI implements ActionListener
 		c.insets = new Insets(0,20,10,0);
 		c.anchor = GridBagConstraints.CENTER;
 		label = new JLabel("Your Code:", JLabel.RIGHT);
-		g.frame.add(label, c);
+		gui.frame.add(label, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
@@ -173,7 +177,7 @@ public class GUI implements ActionListener
 		c.anchor = GridBagConstraints.SOUTH;
 		c.insets = new Insets(0,20,10,0);
 		label = new JLabel("Next Code:", JLabel.RIGHT);
-		g.frame.add(label, c);
+		gui.frame.add(label, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
@@ -185,14 +189,11 @@ public class GUI implements ActionListener
 		c.anchor = GridBagConstraints.SOUTH;
 		c.insets = new Insets(0,10,10,0);
 		label = new JLabel("", JLabel.LEFT);
-		g.frame.add(label, c);
+        gui.textLabel = label;
+		gui.frame.add(label, c);
 
-		button.addActionListener(g);
-		g.textField = text;
-		g.textLabel = label;
-
-		g.frame.pack();
-		g.frame.setVisible(true);
+		gui.frame.pack();
+		gui.frame.setVisible(true);
 	}
 
 	public static void main(String[] args)
@@ -284,7 +285,7 @@ public class GUI implements ActionListener
 			settingsFileLabel.setText("Config File " + (configFile.isFile()?"(overwrite)":"(missing)"));
 			settingsDialog.setVisible(true);
 		} 
-		else if ("Calc".equals(e.getActionCommand()))
+		else if ("Calc".equals(e.getActionCommand()) || (e.getSource() == passwordField))
 		{
 			try 
 			{
