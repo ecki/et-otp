@@ -3,6 +3,7 @@
  */
 package net.eckenfels.etotp;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -40,6 +41,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -49,7 +51,9 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "0.5";
+	private static final String VERSION = "1.0";
+    private static final String HELPURL = "http://ecki.github.com/et-otp/";
+    private static final String PROGNAME = "et-OTP";
 
 	private JPasswordField passwordField;
 	private JTextField textField;
@@ -62,20 +66,24 @@ public class GUI implements ActionListener
 	private File configFile = new File(".et-otp.properties");
 	private JLabel settingsFileLabel;
 
-	GUI()
+    private JLabel statusLabel;
+
+
+    GUI()
 	{
 	}
+
 
 	static void buildMainFrame()
 	{
         GridBagLayout layout = new GridBagLayout();
 		GUI gui= new GUI();
-		gui.frame = new JFrame("et-opt");
+		gui.frame = new JFrame(PROGNAME);
 		gui.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gui.frame.setLayout(layout);
 
 		JMenuBar mb = new JMenuBar();
-		JMenu m = new JMenu("et-otp"); m.setMnemonic(KeyEvent.VK_E);
+		JMenu m = new JMenu(PROGNAME); m.setMnemonic(KeyEvent.VK_E);
 		JMenuItem mi = new JMenuItem("Settings"); mi.addActionListener(gui);  m.add(mi);
 		mi = new JMenuItem("Quit"); mi.addActionListener(gui);  m.add(mi);
 		mb.add(m);
@@ -95,7 +103,7 @@ public class GUI implements ActionListener
 		c.weightx = 1;
 		c.insets = new Insets(10, 10, 20, 10);
 		c.anchor = GridBagConstraints.NORTH;
-		JLabel label = new JLabel("et-OTP Soft Token", JLabel.CENTER);
+		JLabel label = new JLabel(PROGNAME + " Soft Token", JLabel.CENTER);
 		label.setFont(new Font("Serif", Font.BOLD, 16));
 		gui.frame.add(label, c);
 
@@ -120,40 +128,41 @@ public class GUI implements ActionListener
 		c.weightx = 1;
 		c.insets = new Insets(0,10,10,10);
 		JPasswordField pwField = new JPasswordField("");
-		pwField.setCaretPosition(0); // TODO: how to request focus
-        gui.passwordField = pwField;
         pwField.addActionListener(gui);
+        pwField.setFocusable(true);
         gui.frame.add(pwField, c);
+        gui.passwordField = pwField;
 
-		c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 3;
+        c.gridy = 2;
+        c.gridheight = 2;
+        c.gridwidth = 1;
+        c.weighty = 0;
+        c.weightx = 0;
+        c.ipadx = 0;
+        c.insets = new Insets(0,10,10,10);
+        c.anchor = GridBagConstraints.CENTER;
+        JButton button = new JButton("Calc");
+        button.addActionListener(gui);
+        gui.frame.add(button, c);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
 		c.gridy = 4;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.weightx = 1;
 		c.weighty = 1;
+        c.ipadx = 70;
 		c.insets = new Insets(0,10,10,10);
-		c.ipadx = 70;
 		c.anchor = GridBagConstraints.CENTER;
 		JTextField text  = new JTextField("");
 		text.setFont(new Font("Dialog", Font.BOLD, 16));
+		// text.setFocusable(false);
 		text.setEditable(false);
-        gui.textField = text;
 		gui.frame.add(text, c);
-
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = 3;
-		c.gridy = 2;
-		c.gridheight = 2;
-		c.gridwidth = 1;
-		c.weighty = 0;
-		c.weightx = 0;
-		c.ipadx = 0;
-		c.insets = new Insets(0,10,10,10);
-		c.anchor = GridBagConstraints.CENTER;
-		JButton button = new JButton("Calc");
-        button.addActionListener(gui);
-		gui.frame.add(button, c);
+        gui.textField = text;
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
@@ -189,22 +198,38 @@ public class GUI implements ActionListener
 		c.anchor = GridBagConstraints.SOUTH;
 		c.insets = new Insets(0,10,10,0);
 		label = new JLabel("", JLabel.LEFT);
-        gui.textLabel = label;
 		gui.frame.add(label, c);
+        gui.textLabel = label;
 
-		gui.frame.pack();
-		gui.frame.setVisible(true);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 6;
+        c.gridheight = 1;
+        c.gridwidth = 3;
+        c.weightx = 1;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.SOUTH;
+        c.insets = new Insets(5,5,5,5);
+        label = new JLabel("", JLabel.LEFT);
+        gui.frame.add(label, c);
+        gui.statusLabel = label;
+
+        // now we realize the components
+        gui.frame.pack();
+		// when this window opens, we want the focus on the password field
+        gui.passwordField.requestFocusInWindow();
+        // now we can display it
+        gui.frame.setVisible(true);
 	}
 
-	public static void main(String[] args)
-	{
-		buildMainFrame();
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println("Event: " + e.getActionCommand() + " " + e.getSource() + " " + e.getID());
+
+        statusLabel.setText(" ");
+        statusLabel.setForeground(Color.BLACK);
 
 		if ("Quit".equals(e.getActionCommand()))
 		{
@@ -213,7 +238,8 @@ public class GUI implements ActionListener
 		else if ("Manual".equals(e.getActionCommand()))
 		{
 			try {
-				Desktop.getDesktop().browse(new URI("http://ecki.github.com/et-otp/"));
+			    statusLabel.setText("Opening " + HELPURL + " in browser.");
+				Desktop.getDesktop().browse(new URI(HELPURL));
 			} catch (Exception ignored) { }
 		}
 		else if ("Save".equals(e.getActionCommand()))
@@ -226,7 +252,12 @@ public class GUI implements ActionListener
 			try
 			{
 				writeSecret(code, pass);
-			} catch (DecodingException e2) {
+			}
+			catch (Exception ex)
+			{
+			    JOptionPane.showMessageDialog(frame, "Error while writing configuration\n" + ex.getClass().getName() + "\n" + ex.getMessage(), PROGNAME + ": Cannot save configuration", JOptionPane.ERROR_MESSAGE);
+			}
+/*			catch (DecodingException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			} catch (IOException e3) {
@@ -235,9 +266,6 @@ public class GUI implements ActionListener
 			} catch (NoSuchAlgorithmException e4) {
 				// TODO Auto-generated catch block
 				e4.printStackTrace();
-			/*} catch (CertificateException e5) {
-				// TODO Auto-generated catch block
-				e5.printStackTrace();*/
 			} catch (InvalidKeySpecException e6) {
 				// TODO Auto-generated catch block
 				e6.printStackTrace();
@@ -253,19 +281,18 @@ public class GUI implements ActionListener
 			} catch (BadPaddingException e10) {
 				// TODO Auto-generated catch block
 				e10.printStackTrace();
-			}
-
+			}*/
 		}
 		else if ("About".equals(e.getActionCommand()))
 		{
 			if (aboutDialog == null) {
-				JDialog d = new JDialog(frame,"About et-otp", true);
+				JDialog d = new JDialog(frame,"About " + PROGNAME, true);
 				JTextPane t = new JTextPane();
 				t.setContentType("text/html");
-				t.setText("<h1>eckes' TOTP Generator (et-otp)</h1><p>This generator can be used to produce a TOTP (RFC 6238) time-based one-time password.</p>" +
+				t.setText("<h1>eckes' TOTP Generator (" + PROGNAME + ")</h1><p>This generator can be used to produce a TOTP (RFC 6238) time-based one-time password.</p>" +
 						  "<p>This is a so called soft-token, it will be initialized with a specified BASE32 secret. This method is compatible with Amazon's MFA for AWS.</p>" +
 						  "<p>This Java Program is from <b>Bernd Eckenfels</b>, it includes some code from the reference implementation if HOTP (RFC 4226) as well as Google's BASE32 implementation from the Google Authenticator project.</p>" +
-						  "<p>License: GPLv2. Version: " + VERSION + " Homepage: http://ecki.github.com/et-otp</p><p>Config file: " + configFile.getAbsolutePath()+"</p>");
+						  "<p>License: GPLv2.<br/>Version: " + VERSION + "<br/>Homepage: <b>" + HELPURL + "</b></p><p>Config file: <b>" + configFile.getAbsolutePath()+"</b></p>");
 				t.validate();
 				d.add(t);
 				d.setSize(600, 400);
@@ -276,7 +303,7 @@ public class GUI implements ActionListener
 		else if ("Settings".equals(e.getActionCommand()))
 		{
 			if (settingsDialog == null) {
-				JDialog d = new JDialog(frame,"et-otp settings", true);
+				JDialog d = new JDialog(frame, PROGNAME + " settings", true);
 				buildSettingsDialog(d);
 				settingsDialog = d;
 			}
@@ -306,12 +333,48 @@ public class GUI implements ActionListener
 
 				s = RFC4226.generateOTP(bytes, counter+1, 6, false, -1);
 				textLabel.setText(s);
-
-			} catch (Exception ex) { ex.printStackTrace(); }
+                statusLabel.setText("");
+			}
+			catch (BadPaddingException bp)
+			{
+                errorText("Bad password.");
+			}
+			catch (InvalidKeySpecException ik)
+			{
+			    errorText("Password empty or illegal.");
+			}
+			catch (FileNotFoundException fn)
+			{
+			    errorText("Configuration File not found.");
+			}
+			catch (IOException io)
+			{
+			    errorText("I/O Error while loading key: " + io.getMessage());
+			}
+			catch (NoSuchAlgorithmException ns)
+			{
+			    errorText("Crypto Problem: " + ns);
+			}
+			catch (InvalidKeyException ik)
+			{
+			    errorText("Crypto Key Problem: " + ik);
+			}
+			catch (Exception ex)
+			{
+			    errorText("Problem: " + ex);
+			}
 		}
 	}
 
-	private void writeSecret(String code, char[] pass)
+
+	private void errorText(String text)
+    {
+        statusLabel.setForeground(Color.RED);
+        statusLabel.setText(text);
+    }
+
+
+    private void writeSecret(String code, char[] pass)
 			throws DecodingException, NoSuchAlgorithmException,
 			InvalidKeySpecException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException,
@@ -339,10 +402,10 @@ public class GUI implements ActionListener
 		p.put("key.1.salt", Base32.encode(salt));
 		p.put("key.1.encoded", Base32.encode(enc));
 		OutputStream os = new FileOutputStream(configFile);
-		p.store(os , "et-otp softtokens");
-		os.flush();
+		p.store(os , PROGNAME + " " + VERSION + " softtokens");
 		os.close();
 	}
+
 
 	private byte[] readSecret(char[] pass)
 			throws FileNotFoundException, IOException, DecodingException,
@@ -378,6 +441,7 @@ public class GUI implements ActionListener
 
 		return dec;
 	}
+
 
 	private void buildSettingsDialog(JDialog dia)
 	{
@@ -438,7 +502,13 @@ public class GUI implements ActionListener
 		JLabel label = new JLabel(file);
 		dia.add(label, c);
 	}
-}
 
 
+	/** Main method - does not honor any arguments (yet). */
+	public static void main(String[] args)
+    {
+        buildMainFrame();
+    }
+
+} // end class GUI
 
