@@ -11,6 +11,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,11 +54,11 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "1.0";
+	private static final String VERSION = "1.1";
     private static final String HELPURL = "http://ecki.github.com/et-otp/";
     private static final String PROGNAME = "et-OTP";
 
-	private JPasswordField passwordField;
+	JPasswordField passwordField;
 	private JTextField textField;
 	private JLabel textLabel;
 	private JFrame frame;
@@ -65,13 +68,10 @@ public class GUI implements ActionListener
 	private JPasswordField settingsPass;
 	private File configFile = new File(".et-otp.properties");
 	private JLabel settingsFileLabel;
-
     private JLabel statusLabel;
 
 
-    GUI()
-	{
-	}
+    private GUI() { }
 
 
 	static void buildMainFrame()
@@ -214,10 +214,11 @@ public class GUI implements ActionListener
         gui.frame.add(label, c);
         gui.statusLabel = label;
 
+        gui.frame.addComponentListener(gui.new ShowEvent());
+
         // now we realize the components
         gui.frame.pack();
-		// when this window opens, we want the focus on the password field
-        gui.passwordField.requestFocusInWindow();
+
         // now we can display it
         gui.frame.setVisible(true);
 	}
@@ -509,6 +510,20 @@ public class GUI implements ActionListener
     {
         buildMainFrame();
     }
+
+
+	class ShowEvent extends ComponentAdapter
+	{
+	    @Override
+	    public void componentShown(ComponentEvent evt)
+	    {
+	        JFrame f = (JFrame)evt.getComponent();
+            // we can only request focus when everything is shown
+	        f.requestFocus();
+	        f.toFront();
+	        passwordField.requestFocusInWindow();
+	    }
+	} // end class ShowEvent
 
 } // end class GUI
 
