@@ -1,0 +1,14 @@
+language: java
+script: mvn -q clean install
+jdk:
+  - openjdk6
+  - oraclejdk7
+
+# whitelist
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - bernd-2012@eckenfels.net
