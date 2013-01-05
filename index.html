@@ -51,7 +51,7 @@
     <p>The software is tested to work with <a href="http://aws.amazon.com/mfa/">Amazon MFA for AWS</a>,
 	<a href="https://blog.dropbox.com/index.php/another-layer-of-security-for-your-dropbox-account/">Dropbox Two-step verification</a>
     as well as <a href="http://www.google.com/support/accounts/bin/static.py?page=guide.cs&guide=1056283">Google 2-step verification</a>. 
-    In both cases the text string code (instead of the QR-Code) needs to be copied and pasted to the et-otp settings
+    In all cases the text string code (instead of the QR-Code) needs to be copied and pasted to the et-otp settings
     dialog to enable this use case. See the following <a href="https://github.com/ecki/et-otp/wiki">GitHub Wiki</a> pages for a more detailed description:
 
     <ul><li><a href="https://github.com/ecki/et-otp/wiki/Setting%20up%20Google%202-step%20verification">Setting up Google 2-step verification</a></li>
@@ -60,7 +60,7 @@
 
     
     <h2>Dependencies</h2>
-    <p>Java 5, JCE</p>
+    <p>Java SE (Swing), JCE. Tested with Oracle Java SE version 6 and 7.</p>
       
     
     <h2>Install</h2>
@@ -88,7 +88,7 @@
       </p>
       <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
       by running:
-      <pre>$ git clone git://github.com/ecki/et-otp</pre>
+      <pre>git clone git://github.com/ecki/et-otp</pre>
       </p>
 
     <div class="footer">
