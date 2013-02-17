@@ -1,17 +1,15 @@
 language: java
 
-install: mvn clean
+install: mvn -q clean
 
-script: mvn -q install site
+script: mvn install site
 
 jdk:
-  - openjdk6
   - oraclejdk7
 
-# whitelist
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
 
 notifications:
   email:
