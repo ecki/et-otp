@@ -28,6 +28,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
         </plugins>
     </pluginManagement>
 
@@ -77,8 +82,8 @@
 
   <scm>
   	<url>http://github.com/ecki/et-otp</url>
-  	<connection>https://github.com/ecki/et-otp.git</connection>
-  	<developerConnection>ssh://git@github.com:ecki/et-otp.git</developerConnection>
+  	<connection>scm:git:https://github.com/ecki/et-otp.git</connection>
+  	<developerConnection>scm:git:ssh://git@github.com:ecki/et-otp.git</developerConnection>
   	<tag>master</tag>
   </scm>
 
@@ -91,5 +96,13 @@
   	<system>Travis-CI.org</system>
   	<url>https://travis-ci.org/ecki/et-otp</url>
   </ciManagement>
+
+  <developers>
+    <developer>
+        <id>ecki</id>
+        <email>bernd-2013@eckenfels.net</email>
+        <name>Bernd Eckenfels</name>
+      </developer>
+  </developers>
 
 </project>
