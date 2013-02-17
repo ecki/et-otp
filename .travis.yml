@@ -2,7 +2,8 @@ language: java
 
 install: mvn -q clean
 
-script: mvn install site
+# clean / compile - test - package - verify - install - deploy / site
+script: mvn verify
 
 jdk:
   - oraclejdk7
