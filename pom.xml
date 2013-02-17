@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.eckenfels.etotp</groupId>
+  <artifactId>et-otp</artifactId>
+  <version>1.1-SNAPSHOT</version>
+  <name>net.eckenfels.etotp</name>
+  <description>et-otp: TOTP software token</description>
+
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.6</source>
+                <target>1.6</target>
+                <encoding>UTF-8</encoding>
+            </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <configuration>
+               <encoding>UTF-8</encoding>
+            </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>net.eckenfels.etotp.GUI</mainClass>
+                        <addClasspath>false</addClasspath>
+                        <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
+
+    </plugins>
+  </build>
+
+  <url>http://ecki.github.com/et-otp/</url>
+  <inceptionYear>2012</inceptionYear>
+
+  <organization>
+  	<url>http://bernd.eckenfels.net</url>
+  	<name>Bernd Eckenfels</name>
+  </organization>
+
+  <scm>
+  	<url>http://github.com/ecki/et-otp</url>
+  	<connection>https://github.com/ecki/et-otp.git</connection>
+  	<developerConnection>ssh://git@github.com:ecki/et-otp.git</developerConnection>
+  	<tag>master</tag>
+  </scm>
+
+  <issueManagement>
+  	<system>GitHub Issues</system>
+  	<url>https://github.com/ecki/et-otp/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+  	<system>Travis-CI.org</system>
+  	<url>https://travis-ci.org/ecki/et-otp</url>
+  </ciManagement>
+
+</project>
