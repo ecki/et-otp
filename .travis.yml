@@ -1,5 +1,9 @@
 language: java
-script: mvn -q clean install
+
+install: mvn clean
+
+script: mvn -q install site
+
 jdk:
   - openjdk6
   - oraclejdk7
@@ -11,4 +15,4 @@ branches:
 
 notifications:
   email:
-    - bernd-2012@eckenfels.net
+    - bernd-2013@eckenfels.net
