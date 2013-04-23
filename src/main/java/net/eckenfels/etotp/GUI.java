@@ -53,9 +53,9 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "1.1";
-    private static final String HELPURL = "http://ecki.github.com/et-otp/";
-    private static final String PROGNAME = "et-OTP";
+	private static final String VERSION = "1.2-SNAPSHOT";
+	private static final String HELPURL = "http://ecki.github.io/et-otp/";
+	private static final String PROGNAME = "et-OTP";
 
 	JPasswordField passwordField;
 	private JTextField textField;
