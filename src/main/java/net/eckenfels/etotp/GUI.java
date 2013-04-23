@@ -290,7 +290,7 @@ public class GUI implements ActionListener
 				JTextPane t = new JTextPane();
 				t.setContentType("text/html");
 				t.setText("<h1>eckes' TOTP Generator (" + PROGNAME + ")</h1><p>This generator can be used to produce a TOTP (RFC 6238) time-based one-time password.</p>" +
-						  "<p>This is a so called soft-token, it will be initialized with a specified BASE32 secret. This method is compatible with Amazon's MFA for AWS.</p>" +
+						  "<p>This is a so called soft-token, it will be initialized with a specified BASE32 secret. This method is compatible with the 2-step verification methods of Amazon AWS, Dropbox, Google, Microsoft and others.</p>" +
 						  "<p>This Java Program is from <b>Bernd Eckenfels</b>, it includes some code from the reference implementation if HOTP (RFC 4226) as well as Google's BASE32 implementation from the Google Authenticator project.</p>" +
 						  "<p>License: GPLv2.<br/>Version: " + VERSION + "<br/>Homepage: <b>" + HELPURL + "</b></p><p>Config file: <b>" + configFile.getAbsolutePath()+"</b></p>");
 				t.validate();
