@@ -36,6 +36,11 @@
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>2.6</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.4.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -83,7 +88,7 @@
 		</dependency>
 	</dependencies>
 
-	<url>http://ecki.github.com/et-otp/</url>
+	<url>http://ecki.github.io/et-otp/</url>
 	<inceptionYear>2012</inceptionYear>
 	<licenses>
 		<license>
@@ -119,7 +124,9 @@
 			<id>ecki</id>
 			<email>bernd-2013@eckenfels.net</email>
 			<name>Bernd Eckenfels</name>
+			<timezone>+2</timezone>
 		</developer>
 	</developers>
 
 </project>
+
