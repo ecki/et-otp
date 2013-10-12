@@ -53,7 +53,7 @@ import net.eckenfels.etotp.Base32.DecodingException;
 
 public class GUI implements ActionListener
 {
-	private static final String VERSION = "1.2-SNAPSHOT";
+	private static final String VERSION = "1.2";
 	private static final String HELPURL = "http://ecki.github.io/et-otp/";
 	private static final String PROGNAME = "et-OTP";
 
