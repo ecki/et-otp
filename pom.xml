@@ -3,7 +3,7 @@
 
 	<groupId>net.eckenfels.etotp</groupId>
 	<artifactId>et-otp</artifactId>
-	<version>1.2</version>
+	<version>1.3-SNAPSHOT</version>
 	<name>net.eckenfels.etotp</name>
 	<description>et-otp: TOTP software token</description>
 
@@ -105,7 +105,7 @@
 		<url>http://github.io/ecki/et-otp</url>
 		<connection>scm:git:https://github.com/ecki/et-otp.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/ecki/et-otp.git</developerConnection>
-		<tag>et-otp-1.2</tag>
+		<tag>master</tag>
 	</scm>
 
 	<issueManagement>
