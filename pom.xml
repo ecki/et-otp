@@ -102,7 +102,7 @@
 	</organization>
 
 	<scm>
-		<url>http://github.io/ecki/et-otp</url>
+		<url>https://github.com/ecki/et-otp</url>
 		<connection>scm:git:https://github.com/ecki/et-otp.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/ecki/et-otp.git</developerConnection>
 		<tag>master</tag>
