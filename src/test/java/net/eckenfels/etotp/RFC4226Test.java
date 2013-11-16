@@ -15,7 +15,7 @@ import org.junit.Test;
 
 /**
  * JUnit tests for HOTP/TOTP test vectors.
- * 
+ *
  * @author Bernd Eckenfels
  */
 public class RFC4226Test

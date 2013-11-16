@@ -70,7 +70,7 @@ public class Base32Test
         }
         assertEquals(ALL_ONE_BYTES, b.toString());
     }
-    
+
     @Test
     public void testEncodeTwoBytes()
     {
