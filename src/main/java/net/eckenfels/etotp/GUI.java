@@ -51,6 +51,9 @@ import javax.swing.JTextPane;
 import net.eckenfels.etotp.Base32.DecodingException;
 
 
+/**
+ * et-OTP GUI main class.
+ */
 public class GUI implements ActionListener
 {
     private static final String VERSION = GUI.class.getPackage().getImplementationVersion();
@@ -504,7 +507,10 @@ public class GUI implements ActionListener
     }
 
 
-    /** Main method - does not honor any arguments (yet). */
+    /**
+     * Main method - does not honor any arguments (yet).
+     * @param args ignored
+     */
     public static void main(String[] args)
     {
         buildMainFrame();
