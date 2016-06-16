@@ -9,6 +9,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -190,6 +193,20 @@ public class GUI implements ActionListener
         label = new JLabel("Next Code:", JLabel.RIGHT);
         gui.frame.add(label, c);
 
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 3;
+        c.gridy = 4;
+        c.gridheight = 2;
+        c.gridwidth = 1;
+        c.weighty = 0;
+        c.weightx = 0;
+        c.ipadx = 0;
+        c.insets = new Insets(0,10,10,10);
+        c.anchor = GridBagConstraints.CENTER;
+        JButton button2 = new JButton("Copy");
+        button2.addActionListener(gui);
+        gui.frame.add(button2, c);
+
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
         c.gridy = 5;
@@ -314,6 +331,13 @@ public class GUI implements ActionListener
             settingsPass.setText("");
             settingsFileLabel.setText("Config File " + (configFile.isFile()?"(overwrite)":"(missing)"));
             settingsDialog.setVisible(true);
+        }
+        else if ("Copy".equals(e.getActionCommand())) 
+        {
+        	String s = textField.getText();
+        	StringSelection selection = new StringSelection(s);
+        	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        	clipboard.setContents(selection, null);
         }
         else if ("Calc".equals(e.getActionCommand()) || (e.getSource() == passwordField))
         {
