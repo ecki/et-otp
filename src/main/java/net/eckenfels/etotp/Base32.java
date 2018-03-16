@@ -27,10 +27,10 @@ public class Base32
         DIGITS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".toCharArray(); // RFC 4668/3548
         MASK = DIGITS.length - 1;
         SHIFT = Integer.numberOfTrailingZeros(DIGITS.length);
-        CHAR_MAP = new HashMap<Character, Integer>(DIGITS.length);
+        CHAR_MAP = new HashMap<>(DIGITS.length);
         for (int i = 0; i < DIGITS.length; i++)
         {
-            CHAR_MAP.put(DIGITS[i], i);
+            CHAR_MAP.put(Character.valueOf(DIGITS[i]), Integer.valueOf(i));
         }
     }
 
@@ -66,7 +66,7 @@ public class Base32
         int bitsLeft = 0;
         for (char c : encoded.toCharArray())
         {
-            Integer i = CHAR_MAP.get(c);
+            Integer i = CHAR_MAP.get(Character.valueOf(c));
             if (i==null) {
                 throw new DecodingException("Illegal character: " + c);
             }

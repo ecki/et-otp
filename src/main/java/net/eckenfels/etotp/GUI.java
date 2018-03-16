@@ -260,7 +260,7 @@ public class GUI implements ActionListener
             try {
                 statusLabel.setText("Opening " + HELPURL + " in browser.");
                 Desktop.getDesktop().browse(new URI(HELPURL));
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) { /* dont care */ }
         }
         else if ("Save".equals(e.getActionCommand()))
         {
@@ -332,7 +332,7 @@ public class GUI implements ActionListener
             settingsFileLabel.setText("Config File " + (configFile.isFile()?"(overwrite)":"(missing)"));
             settingsDialog.setVisible(true);
         }
-        else if ("Copy".equals(e.getActionCommand())) 
+        else if ("Copy".equals(e.getActionCommand()))
         {
         	String s = textField.getText();
         	StringSelection selection = new StringSelection(s);
