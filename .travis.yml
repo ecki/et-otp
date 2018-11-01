@@ -6,8 +6,9 @@ install: mvn -q clean
 script: mvn verify
 
 jdk:
-  - oraclejdk7
   - oraclejdk8
+  - openjdk8
+  - openjdk11
 
 #branches:
 #  only:
@@ -15,4 +16,4 @@ jdk:
 
 notifications:
   email:
-    - bernd-2014@eckenfels.net
+    - bernd-2018@eckenfels.net
