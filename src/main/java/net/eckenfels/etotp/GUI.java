@@ -50,6 +50,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import net.eckenfels.etotp.Base32.DecodingException;
 
@@ -84,7 +86,7 @@ public class GUI implements ActionListener
         GridBagLayout layout = new GridBagLayout();
         GUI gui= new GUI();
         gui.frame = new JFrame(PROGNAME);
-        gui.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gui.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         gui.frame.setLayout(layout);
 
         JMenuBar mb = new JMenuBar();
@@ -108,7 +110,7 @@ public class GUI implements ActionListener
         c.weightx = 1;
         c.insets = new Insets(10, 10, 20, 10);
         c.anchor = GridBagConstraints.NORTH;
-        JLabel label = new JLabel(PROGNAME + " Soft Token", JLabel.CENTER);
+        JLabel label = new JLabel(PROGNAME + " Soft Token", SwingConstants.CENTER);
         label.setFont(new Font("Serif", Font.BOLD, 16));
         gui.frame.add(label, c);
 
@@ -178,7 +180,7 @@ public class GUI implements ActionListener
         c.weighty = 0;
         c.insets = new Insets(0,20,10,0);
         c.anchor = GridBagConstraints.CENTER;
-        label = new JLabel("Your Code:", JLabel.RIGHT);
+        label = new JLabel("Your Code:", SwingConstants.RIGHT);
         gui.frame.add(label, c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -190,7 +192,7 @@ public class GUI implements ActionListener
         c.weighty = 0;
         c.anchor = GridBagConstraints.SOUTH;
         c.insets = new Insets(0,20,10,0);
-        label = new JLabel("Next Code:", JLabel.RIGHT);
+        label = new JLabel("Next Code:", SwingConstants.RIGHT);
         gui.frame.add(label, c);
 
         c.fill = GridBagConstraints.BOTH;
@@ -216,7 +218,7 @@ public class GUI implements ActionListener
         c.weighty = 0;
         c.anchor = GridBagConstraints.SOUTH;
         c.insets = new Insets(0,10,10,0);
-        label = new JLabel("", JLabel.LEFT);
+        label = new JLabel("", SwingConstants.LEFT);
         gui.frame.add(label, c);
         gui.textLabel = label;
 
@@ -229,7 +231,7 @@ public class GUI implements ActionListener
         c.weighty = 0;
         c.anchor = GridBagConstraints.SOUTH;
         c.insets = new Insets(5,5,5,5);
-        label = new JLabel("", JLabel.LEFT);
+        label = new JLabel("", SwingConstants.LEFT);
         gui.frame.add(label, c);
         gui.statusLabel = label;
 
@@ -264,7 +266,10 @@ public class GUI implements ActionListener
         }
         else if ("Save".equals(e.getActionCommand()))
         {
-            settingsDialog.setVisible(false);
+            if (settingsDialog != null)
+            {
+                settingsDialog.setVisible(false);
+            }
 
             String code = settingsCode.getText();
             char[] pass = settingsPass.getPassword();
@@ -278,30 +283,14 @@ public class GUI implements ActionListener
                 JOptionPane.showMessageDialog(frame, "Error while writing configuration\n" + ex.getClass().getName() + "\n" + ex.getMessage(), PROGNAME + ": Cannot save configuration", JOptionPane.ERROR_MESSAGE);
             }
 /*			catch (DecodingException e2) {
-                // TODO Auto-generated catch block
-                e2.printStackTrace();
             } catch (IOException e3) {
-                // TODO Auto-generated catch block
-                e3.printStackTrace();
             } catch (NoSuchAlgorithmException e4) {
-                // TODO Auto-generated catch block
-                e4.printStackTrace();
             } catch (InvalidKeySpecException e6) {
-                // TODO Auto-generated catch block
-                e6.printStackTrace();
             } catch (NoSuchPaddingException e7) {
-                // TODO Auto-generated catch block
-                e7.printStackTrace();
             } catch (InvalidKeyException e8) {
-                // TODO Auto-generated catch block
-                e8.printStackTrace();
             } catch (IllegalBlockSizeException e9) {
-                // TODO Auto-generated catch block
-                e9.printStackTrace();
             } catch (BadPaddingException e10) {
-                // TODO Auto-generated catch block
-                e10.printStackTrace();
-            }*/
+*/
         }
         else if ("About".equals(e.getActionCommand()))
         {
@@ -494,7 +483,7 @@ public class GUI implements ActionListener
         c.gridx = 1;
         c.gridy = 2;
         c.weightx = 0;
-        dia.add(new JLabel("Password:", JLabel.RIGHT), c);
+        dia.add(new JLabel("Password:", SwingConstants.RIGHT), c);
 
         c.gridx = 2;
         c.gridy = 2;
