@@ -1,9 +1,9 @@
 language: java
 
-install: mvn -q clean
+install: mvn -B -C -q clean
 
 # clean / compile - test - package - verify - install - deploy / site
-script: mvn verify
+script: mvn -B -C -e verify
 
 jdk:
   - oraclejdk8
