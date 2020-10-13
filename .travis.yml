@@ -1,4 +1,5 @@
 language: java
+dist: trusty
 
 install: mvn -B -C -q clean
 
@@ -16,4 +17,4 @@ jdk:
 
 notifications:
   email:
-    - bernd-2018@eckenfels.net
+    - bernd-2020@eckenfels.net
